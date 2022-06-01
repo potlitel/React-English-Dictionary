@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import Result from "./components/Results";
 //import "./functions"
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
   const [mean, setMean] = useState([]);
   const [main, setMain] = useState([]);
   const [audio, setAudio] = useState();
+  const data = "";
 
   /*$(document).ready(function () {
     var submitIcon = $(".searchbox-icon");
@@ -79,7 +81,7 @@ function App() {
 
   
   useEffect(() => {
-    dataApi();
+    //dataApi();
   }, []);
 
   const Search = () => {
@@ -102,9 +104,17 @@ function App() {
                 <span></span>
               </button>
             </div>
+            <div></div>
           </div>
         </form>
       </div>
+      {word === "" ? (
+        <Result mean={mean} main={main} audio={audio} />
+      ) : (
+        <div className="fs-1 text-capitalize text-center fw-bold text-decoration-underline text-white bg-dark extra">
+          type a word in the box
+        </div>
+      )}
       {/*<div class="container">
         <form class="searchbox">
           <input
