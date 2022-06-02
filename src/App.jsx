@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Result from "./components/Results";
+import LoadingSpinner from "./components/LoadingSpinner";
 //import "./functions"
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
   const [mean, setMean] = useState([]);
   const [main, setMain] = useState([]);
   const [audio, setAudio] = useState();
-  const data = "";
+  const [isLoading, setIsLoading] = useState(false);
 
   /*$(document).ready(function () {
     var submitIcon = $(".searchbox-icon");
@@ -66,20 +67,32 @@ function App() {
     }
   }*/
 
+  const sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
+
   const dataApi = async () => {
+    setIsLoading(true);
     const data = await fetch(
       `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
     );
     const dataJ = await data.json();
-    setMean(dataJ);
-    console.log(dataJ);
-    setMain(dataJ[0]);
-    console.log(dataJ[0]);
-    const url = dataJ[0].phonetics[0].audio;
-    setAudio(url);
+    await sleep(2000); //wait 5 seconds
+    setIsLoading(false); // Hide loading screen
+    if (dataJ.title != "No Definitions Found") {
+      setMean(dataJ);
+      console.log(dataJ);
+      setMain(dataJ[0]);
+      console.log(dataJ[0]);
+      const url = dataJ[0].phonetics[0].audio;
+      setAudio(url);
+    } else {
+      setWord("");
+      setMean([]);
+      setMain([]);
+    }
   };
 
-  
   useEffect(() => {
     //dataApi();
   }, []);
@@ -90,31 +103,44 @@ function App() {
   };
 
   return (
-    <>
-      <div id="cover">
+    <div>
+      <div id="cover" className="container-fluid">
         <form method="get" action="">
           <div class="tb">
             <div class="td">
-              <input type="text" placeholder="Type your word" required value={word}
-              onChange={(e) => setWord(e.target.value)} />
+              <input
+                type="text"
+                placeholder="Type your word"
+                required
+                value={word}
+                onChange={(e) => setWord(e.target.value)}
+              />
             </div>
-            <div class="td" id="s-cover">
-              <button onClick={Search}>
-                <div id="s-circle"></div>
-                <span></span>
-              </button>
-            </div>
-            <div></div>
+            {word ? (
+              <div class="td" id="s-cover">
+                <button onClick={Search} disabled={isLoading}>
+                  <div id="s-circle"></div>
+                  <span></span>
+                </button>
+              </div>
+            ) : null}
           </div>
         </form>
       </div>
-      {word === "" ? (
-        <Result mean={mean} main={main} audio={audio} />
-      ) : (
-        <div className="fs-1 text-capitalize text-center fw-bold text-decoration-underline text-white bg-dark extra">
-          type a word in the box
-        </div>
-      )}
+      <div>
+        {word === "" ? (
+          isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <Result mean={mean} main={main} audio={audio} />
+          )
+        ) : (
+          <div className="fs-1 text-capitalize text-center fw-bold text-decoration-underline text-white bg-dark extra">
+            English Dictionary
+          </div>
+        )}
+      </div>
+
       {/*<div class="container">
         <form class="searchbox">
           <input
@@ -142,7 +168,7 @@ function App() {
         </div>
         <span class="close" onClick={(event)=>searchToggle(this,event)}></span>
       </div>*/}
-    </>
+    </div>
   );
 }
 
