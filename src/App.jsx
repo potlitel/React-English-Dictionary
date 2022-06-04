@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Result from "./components/Results";
@@ -7,11 +7,12 @@ import { SearchButton } from "./components/SearchButton";
 //import "./functions"
 
 function App() {
-  const [word, setWord] = useState();
+  const [word, setWord] = useState("");
   const [mean, setMean] = useState([]);
   const [main, setMain] = useState([]);
   const [audio, setAudio] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [clic, setClic] = useState(false);
 
   const sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -23,7 +24,7 @@ function App() {
       `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
     );
     const dataJ = await data.json();
-    await sleep(2000); //wait 5 seconds
+    await sleep(2000); //wait 2 seconds
     setIsLoading(false); // Hide loading screen
     if (dataJ.title != "No Definitions Found") {
       setMean(dataJ);
@@ -38,18 +39,25 @@ function App() {
       setMain([]);
     }
   };
+  const myContainer = useRef(null);
 
   useEffect(() => {
     //dataApi();
+    console.log("myContainer..", myContainer.current);
+    //myContainer.current.innerHTML = "Alain Jorge Acuña";
   }, []);
 
   const Search = () => {
     dataApi();
     setWord("");
+    setClic(true);
   };
 
   return (
     <div>
+      <div className="box box4" style={{ textAlign: "center" }}>
+        <h1>English Dictionary - Type your word</h1>
+      </div>
       <div id="cover" className="container-fluid">
         <form method="get" action="">
           <div class="tb">
@@ -63,24 +71,23 @@ function App() {
               />
             </div>
             {word ? (
-              <SearchButton search={Search} isLoading={isLoading} />
+              <div>
+                <SearchButton search={Search} isLoading={isLoading} />
+              </div>
             ) : null}
           </div>
         </form>
       </div>
-      <div>
+      <div ref={myContainer}>
         {word === "" ? (
           isLoading ? (
             <LoadingSpinner />
           ) : (
-            <Result mean={mean} main={main} audio={audio} />
+            clic && <Result mean={mean} main={main} audio={audio} />
           )
-        ) : (
-          <div className="box box4" style={{ textAlign: "center" }}>
-            <h1>English Dictionary - Type your word</h1>
-          </div>
-        )}
+        ) : null}
       </div>
+      {word ? <>Hola</> : null}
     </div>
   );
 }
