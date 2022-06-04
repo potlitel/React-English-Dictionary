@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Result from "./components/Results";
 import LoadingSpinner from "./components/LoadingSpinner";
+import { SearchButton } from "./components/SearchButton";
 //import "./functions"
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
       setMean(dataJ);
       console.log(dataJ);
       setMain(dataJ[0]);
-      console.log(dataJ[0]);
+      //console.log(dataJ[0]);
       const url = dataJ[0].phonetics[0].audio;
       setAudio(url);
     } else {
@@ -62,12 +63,7 @@ function App() {
               />
             </div>
             {word ? (
-              <div class="td" id="s-cover">
-                <button onClick={Search} disabled={isLoading}>
-                  <div id="s-circle"></div>
-                  <span></span>
-                </button>
-              </div>
+              <SearchButton search={Search} isLoading={isLoading} />
             ) : null}
           </div>
         </form>
@@ -80,8 +76,8 @@ function App() {
             <Result mean={mean} main={main} audio={audio} />
           )
         ) : (
-          <div className="fs-1 text-capitalize text-center fw-bold text-decoration-underline text-white bg-dark extra">
-            English Dictionary
+          <div className="box box4" style={{ textAlign: "center" }}>
+            <h1>English Dictionary - Type your word</h1>
           </div>
         )}
       </div>
