@@ -10,7 +10,7 @@ const Result = ({ mean, main, audio }) => {
           {main.word ? main.word : <p>No Definitions Found</p>}
         </div>
         <div className="box box4" style={{ textAlign: "center" }}>
-          {audio ? (
+          {main.word && audio ? (
             <AudioPlayer
               autoPlay
               src={audio}

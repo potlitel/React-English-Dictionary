@@ -32,7 +32,7 @@ function App() {
       setMain(dataJ[0]);
       //console.log(dataJ[0]);
       const url = dataJ[0].phonetics[0].audio;
-      setAudio(url);
+      setAudio("audio .. " + url);
     } else {
       setWord("");
       setMean([]);
