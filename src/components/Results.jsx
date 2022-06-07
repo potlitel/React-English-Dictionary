@@ -14,9 +14,14 @@ const Result = ({ mean, main, audio }) => {
           {/* Audio section */}
         </div>
       </div>
-      <Text fontSize="50px" color={main.word ? "black" : "red"} style={{textAlign:"center"}}>
+      <Text
+        fontSize="50px"
+        color={main.word ? "black" : "red"}
+        style={{ textAlign: "center" }}
+      >
         {main.word ? main.word : <p>No Definitions Found</p>}
       </Text>
+      {main.word ? (
       <Grid
         h="200px"
         w="90%"
@@ -37,14 +42,13 @@ const Result = ({ mean, main, audio }) => {
               className="color m-4 text-center col-10"
               src={audio}
             ></audio>
-          ) : (
-            <div className="color fs-3 text-center">Audio not found</div>
-          )}
+          ) : null}
+          {main.word && !audio && <div className="color fs-3 text-center">Audio not found</div>}
         </GridItem>
         <GridItem colSpan={2} bg="papayawhip" />
         <GridItem colSpan={2} bg="papayawhip" />
         <GridItem colSpan={4} bg="tomato" />
-      </Grid>
+      </Grid> ) : null}
     </>
   );
 };
