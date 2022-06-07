@@ -87,7 +87,7 @@ function App() {
           )
         ) : null}
       </div>
-      {word ? <>Hola</> : null}
+      {!word ? <>Hola</> : null}
     </div>
   );
 }
