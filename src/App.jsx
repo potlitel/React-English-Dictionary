@@ -4,6 +4,7 @@ import "./App.css";
 import Result from "./components/Results";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { SearchButton } from "./components/SearchButton";
+import * as React from 'react';
 //import "./functions"
 
 function App() {
@@ -13,6 +14,9 @@ function App() {
   const [audio, setAudio] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [clic, setClic] = useState(false);
+  const [searchWord, setsearchWord] = React.useState(
+    localStorage.getItem("searchWord") || ""
+  );
 
   const sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -44,13 +48,18 @@ function App() {
   useEffect(() => {
     //dataApi();
     console.log("myContainer..", myContainer.current);
+    // Remove
+    //localStorage.removeItem('searchWord');
     //myContainer.current.innerHTML = "Alain Jorge Acuña";
   }, []);
 
   const Search = () => {
     dataApi();
-    setWord("");
     setClic(true);
+    //JSON.stringify(searchWord);
+    /*setsearchWord(word);*/
+    localStorage.setItem('searchWord', word);
+    setWord("");
   };
 
   return (

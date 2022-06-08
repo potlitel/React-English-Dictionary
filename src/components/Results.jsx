@@ -19,36 +19,67 @@ const Result = ({ mean, main, audio }) => {
         color={main.word ? "black" : "red"}
         style={{ textAlign: "center" }}
       >
-        {main.word ? main.word : <p>No Definitions Found</p>}
+        {main.word ? (
+          main.word
+        ) : (
+          <p>No Definitions Found for {localStorage.getItem("searchWord")}</p>
+        )}
       </Text>
       {main.word ? (
-      <Grid
-        h="200px"
-        w="90%"
-        templateRows="repeat(2, 1fr)"
-        templateColumns="repeat(5, 1fr)"
-        gap={4}
-      >
-        <GridItem rowSpan={2} colSpan={1} bg="tomato">
-          {main.word && audio ? (
-            /*<AudioPlayer
+        <div  style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}>
+        <Grid
+          h="200px"
+          w="90%"
+          templateRows="repeat(2, 1fr)"
+          templateColumns="repeat(5, 1fr)"
+          gap={4}
+        >
+          <GridItem rowSpan={2} colSpan={1} bg="tomato">
+            {main.word && audio ? (
+              /*<AudioPlayer
               autoPlay
               src={audio}
               onPlay={(e) => console.log("onPlay")}
               // other props here
             />*/
+              <audio
+                controls
+                className="color m-4 text-center col-10"
+                src={audio}
+              ></audio>
+            ) : null}
+            {main.word && !audio && (
+              <div className="color fs-3 text-center">Audio not found</div>
+            )}
+          </GridItem>
+          <GridItem colSpan={2} bg="papayawhip">
             <audio
               controls
               className="color m-4 text-center col-10"
               src={audio}
             ></audio>
-          ) : null}
-          {main.word && !audio && <div className="color fs-3 text-center">Audio not found</div>}
-        </GridItem>
-        <GridItem colSpan={2} bg="papayawhip" />
-        <GridItem colSpan={2} bg="papayawhip" />
-        <GridItem colSpan={4} bg="tomato" />
-      </Grid> ) : null}
+          </GridItem>
+          <GridItem colSpan={2} bg="papayawhip">
+            <audio
+              controls
+              className="color m-4 text-center col-10"
+              src={audio}
+            ></audio>
+          </GridItem>
+          <GridItem colSpan={4} bg="tomato">
+            <audio
+              controls
+              className="color m-4 text-center col-10"
+              src={audio}
+            ></audio>
+          </GridItem>
+        </Grid>
+        </div>
+      ) : null}
     </>
   );
 };
